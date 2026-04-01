@@ -19,7 +19,8 @@ const persona = {
   mostrarGeneracion: function () {
     let generación = "";
     let rasgo = "";
-
+    
+    //pongo el true para que pueda evaluar entre los años, sino el switch buscaria el numero exacto y no un rango
     switch (true) {
       case 1930 <= this.anioNacimiento && this.anioNacimiento <= 1948:
         generación = "Silent Generation";

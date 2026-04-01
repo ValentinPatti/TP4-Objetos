@@ -9,7 +9,7 @@
 //!-aniadirContacto(Contacto): Añade un contacto a la agenda, si la agenda no puede almacenar más contactos indicar por pantalla.
 //!-existeContacto(Contacto): indica si el contacto pasado existe o no.
 //!-listarContactos(): Lista toda la agenda
-//?-buscarContacto(nombre): busca un contacto por su nombre y muestra su teléfono.
+//!-buscarContacto(nombre): busca un contacto por su nombre y muestra su teléfono.
 //?-eliminarContacto(Contacto c): elimina el contacto de la agenda, indica si se ha eliminado o no por pantalla
 //!-agendaLlena(): indica si la agenda está llena.
 //?-huecosLibres(): indica cuántos contactos más podemos ingresar.
@@ -74,14 +74,31 @@ function listarContactos() {
 }
 
 function buscarContacto(nombre) {
-    const encontrado = agenda.find(contacto => contacto.nombre === nombre.toLowerCase());
-    if (encontrado) {
-        alert(`El teléfono de ${nombre} es: ${encontrado.telefono}`);
+  const encontrado = agenda.find(
+    (contacto) => contacto.nombre === nombre.toLowerCase(),
+  );
+  if (encontrado) {
+    alert(`El teléfono de ${nombre} es: ${encontrado.telefono}`);
+  } else {
+    alert("Contacto no encontrado.");
+  }
+}
+
+function eliminarContacto(nombre) {
+    const indice = agenda.findIndex(contacto => contacto.nombre === nombre.toLowerCase());
+    if (indice !== -1) {
+        agenda.splice(indice, 1);
+        alert(`Contacto "${nombre}" eliminado correctamente.`);
     } else {
-        alert("Contacto no encontrado.");
+        alert("No se pudo eliminar: El contacto no existe.");
     }
 }
 
+function huecosLibres() {
+    const libres = maxContactos - agenda.length;
+    alert(`Quedan ${libres} huecos libres.`);
+    return libres;
+}
 function ejecutarMenu() {
   crearAgenda();
   let opcion = "";
@@ -108,8 +125,8 @@ function ejecutarMenu() {
         if (nombre && telefono) aniadirContacto(nombre, telefono);
         break;
       case "2":
-        let nombreExiste = prompt("Ingrese el nombre a verificar:");
-        if (existeContacto({ nombre: nombreExiste })) {
+        let nombreExistente = prompt("Ingrese el nombre a verificar:");
+        if (existeContacto({ nombre: nombreExistente })) {
           alert("El contacto ya esta registrado");
         } else {
           alert("No existe el contacto");
@@ -123,14 +140,22 @@ function ejecutarMenu() {
         buscarContacto(nombreABuscar);
         break;
       case "5":
+        let nombreEliminar = prompt("Nombre a eliminar:");
+        eliminarContacto(nombreEliminar);
         break;
       case "6":
+        alert(agendaLlena() 
+        ? "La agenda está LLENA." 
+        : "Aún hay espacio.");
         break;
       case "7":
+        huecosLibres();
         break;
       case "8":
+        alert('Saliendo de la agenda...')
         break;
       default:
+        alert('Opcion invalida')
         break;
     }
   }
